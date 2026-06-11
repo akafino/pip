@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase Request — Iarnród Éireann</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      background: #F0F2F5;
+      color: #1A1A2E;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 32px 16px 64px;
+    }
+
+    .page-header {
+      width: 100%;
+      max-width: 560px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .ie-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ie-logo-mark {
+      width: 36px;
+      height: 36px;
+      background: #003D7A;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ie-logo-mark svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+
+    .ie-logo-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: #003D7A;
+      line-height: 1.2;
+    }
+
+    .ie-logo-sub {
+      font-size: 11px;
+      font-weight: 400;
+      color: #6B7280;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    .app-bar {
+      background: #003D7A;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .app-bar-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .app-bar-icon i { color: #fff; font-size: 18px; }
+
+    .app-bar-title { color: #fff; font-size: 15px; font-weight: 600; }
+    .app-bar-sub { color: rgba(255,255,255,0.65); font-size: 12px; margin-top: 1px; }
+
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: auto;
+    }
+
+    .step-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transition: background 0.3s;
+    }
+
+    .step-dot.active { background: #fff; }
+
+    .progress-track {
+      height: 3px;
+      background: #E5E7EB;
+    }
+
+    .progress-fill {
+      height: 3px;
+      background: #003D7A;
+      transition: width 0.4s ease;
+    }
+
+    .form-body { padding: 24px 24px 28px; }
+
+    .step-label {
+      font-size: 12px;
+      color: #9CA3AF;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .section-heading {
+      font-size: 11px;
+      font-weight: 600;
+      color: #9CA3AF;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin: 22px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    .section-heading:first-child { margin-top: 0; }
+
+    .field { margin-bottom: 14px; }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+
+    .field .hint {
+      font-size: 12px;
+      color: #9CA3AF;
+      margin-top: 4px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #1A1A2E;
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 9px 12px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      appearance: none;
+    }
+
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 32px;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: #003D7A;
+      box-shadow: 0 0 0 3px rgba(0,61,122,0.1);
+      background: #fff;
+    }
+
+    .field textarea { resize: none; height: 80px; line-height: 1.6; }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .prefilled-field {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 9px 12px;
+    }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #003D7A;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .avatar-name { font-size: 13px; font-weight: 500; color: #1A1A2E; }
+    .avatar-sub { font-size: 11px; color: #9CA3AF; }
+
+    .cost-wrap {
+      position: relative;
+    }
+
+    .cost-prefix {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: #6B7280;
+      pointer-events: none;
+    }
+
+    .cost-wrap input { padding-left: 22px; }
+
+    .threshold-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 20px;
+      background: #D1FAE5;
+      color: #065F46;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .threshold-badge.over {
+      background: #FEE2E2;
+      color: #991B1B;
+    }
+
+    .threshold-badge i { font-size: 14px; }
+
+    .info-box {
+      display: flex;
+      gap: 10px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-top: 16px;
+    }
+
+    .info-box i { color: #1D4ED8; font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .info-box p { font-size: 13px; color: #1E40AF; line-height: 1.5; }
+
+    .upload-zone {
+      border: 1.5px dashed #D1D5DB;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      background: #F9FAFB;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .upload-zone:hover { border-color: #003D7A; background: #EFF6FF; }
+    .upload-zone i { font-size: 28px; color: #9CA3AF; display: block; margin-bottom: 8px; }
+    .upload-zone p { font-size: 13px; color: #6B7280; }
+    .upload-zone span { font-size: 12px; color: #9CA3AF; }
+
+    .file-list { margin-top: 10px; }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #374151;
+      padding: 6px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    .file-item:last-child { border-bottom: none; }
+    .file-item i { color: #003D7A; font-size: 15px; }
+
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid #E5E7EB;
+      background: #fff;
+      color: #374151;
+      transition: background 0.15s, border-color 0.15s;
+      text-decoration: none;
+    }
+
+    .btn:hover { background: #F9FAFB; border-color: #D1D5DB; }
+
+    .btn-primary {
+      background: #003D7A;
+      color: #fff;
+      border-color: #003D7A;
+    }
+
+    .btn-primary:hover { background: #00306A; border-color: #00306A; }
+
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+
+    .confirm-table { width: 100%; border-collapse: collapse; }
+
+    .confirm-table tr td {
+      padding: 9px 0;
+      font-size: 13px;
+      border-bottom: 1px solid #F3F4F6;
+      vertical-align: top;
+    }
+
+    .confirm-table tr:last-child td { border-bottom: none; }
+    .confirm-table .c-label { color: #6B7280; width: 45%; }
+    .confirm-table .c-value { color: #1A1A2E; font-weight: 500; text-align: right; }
+
+    .confirm-card {
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+
+    .success-wrap { text-align: center; padding: 24px 16px; }
+
+    .success-icon {
+      width: 56px;
+      height: 56px;
+      background: #D1FAE5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .success-icon i { font-size: 28px; color: #065F46; }
+
+    .success-title { font-size: 18px; font-weight: 600; color: #1A1A2E; margin-bottom: 4px; }
+    .success-sub { font-size: 14px; color: #6B7280; }
+
+    .ref-pill {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      background: #F3F4F6;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 7px 18px;
+      margin: 14px 0;
+      color: #003D7A;
+      font-family: 'Courier New', monospace;
+    }
+
+    .next-steps {
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 16px;
+      text-align: left;
+    }
+
+    .next-steps-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #9CA3AF;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+
+    .next-step {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: #4B5563;
+      line-height: 1.5;
+    }
+
+    .next-step:last-child { margin-bottom: 0; }
+
+    .step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #003D7A;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .warning-box {
+      display: none;
+      gap: 10px;
+      background: #FEF3C7;
+      border: 1px solid #FCD34D;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-top: 8px;
+    }
+
+    .warning-box.visible { display: flex; }
+    .warning-box i { color: #92400E; font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .warning-box p { font-size: 13px; color: #78350F; line-height: 1.5; }
+
+    .page-footer {
+      width: 100%;
+      max-width: 560px;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #9CA3AF;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 16px 12px 40px; }
+      .field-row { grid-template-columns: 1fr; }
+      .form-body { padding: 18px 16px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-header">
+    <div class="ie-logo">
+      <div class="ie-logo-mark">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 6h18M3 12h18M3 18h18" stroke="#fff" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <div>
+        <div class="ie-logo-text">Iarnród Éireann</div>
+        <div class="ie-logo-sub">Irish Rail</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" role="main">
+    <div class="app-bar">
+      <div class="app-bar-icon">
+        <i class="ti ti-shopping-cart" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div class="app-bar-title">Purchase request</div>
+        <div class="app-bar-sub">Low-value items — under €5,000</div>
+      </div>
+      <div class="step-indicator" id="stepDots" aria-hidden="true">
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+      </div>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width: 33%;"></div>
+    </div>
+
+    <div class="form-body">
+      <div class="step-label" id="stepLabel">Step 1 of 3 — Item details</div>
+
+      <!-- STEP 1 -->
+      <div class="step-panel active" id="step1" role="region" aria-label="Step 1: Item details">
+
+        <div class="section-heading">Your details</div>
+        <div class="field">
+          <label>Requested by</label>
+          <div class="prefilled-field">
+            <div class="avatar">FK</div>
+            <div>
+              <div class="avatar-name">Fintan Kennedy</div>
+              <div class="avatar-sub">CTO Department · Connolly Station</div>
+            </div>
+          </div>
+          <span class="hint">Auto-filled from your IÉ Microsoft account</span>
+        </div>
+
+        <div class="section-heading">Item details</div>
+
+        <div class="field">
+          <label for="itemTitle">Item name <span style="color:#EF4444">*</span></label>
+          <input type="text" id="itemTitle" placeholder="e.g. Standing desk, Laser printer" value="Sit-stand desk (x2)">
+        </div>
+
+        <div class="field">
+          <label for="itemDesc">Description / specification <span style="color:#EF4444">*</span></label>
+          <textarea id="itemDesc" placeholder="Include make/model, quantity, and any specific requirements">Ergonomic sit-stand desk, approx. 140cm wide, 2 units required for open plan area at Connolly Station. Electric height adjustment preferred.</textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="category">Category <span style="color:#EF4444">*</span></label>
+            <select id="category">
+              <option>Office furniture</option>
+              <option>IT equipment</option>
+              <option>Printing &amp; scanning</option>
+              <option>Stationery &amp; supplies</option>
+              <option>Facilities &amp; maintenance</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="qty">Quantity <span style="color:#EF4444">*</span></label>
+            <input type="number" id="qty" value="2" min="1">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="cost">Estimated total cost <span style="color:#EF4444">*</span></label>
+            <div class="cost-wrap">
+              <span class="cost-prefix">€</span>
+              <input type="number" id="cost" value="1400" min="0" step="1" oninput="checkThreshold(this.value)">
+            </div>
+            <span class="hint">Must be under €5,000 incl. VAT</span>
+          </div>
+          <div class="field">
+            <label>Threshold check</label>
+            <div style="padding-top: 6px;">
+              <span class="threshold-badge" id="thresholdBadge">
+                <i class="ti ti-circle-check" aria-hidden="true" id="thresholdIcon"></i>
+                <span id="thresholdText">Under €5,000</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="warning-box" id="overThresholdWarning">
+          <i class="ti ti-alert-triangle" aria-hidden="true"></i>
+          <p>This amount exceeds €5,000. Please contact the procurement team directly to begin a formal tender process.</p>
+        </div>
+
+        <div class="info-box">
+          <i class="ti ti-info-circle" aria-hidden="true"></i>
+          <p>Requests over €5,000 must follow the full IÉ procurement process. Contact <strong>procurement@irishrail.ie</strong> directly.</p>
+        </div>
+
+        <div class="btn-row">
+          <div></div>
+          <button class="btn btn-primary" onclick="goStep(2)">
+            Continue <i class="ti ti-arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-panel" id="step2" role="region" aria-label="Step 2: Justification and quotes">
+
+        <div class="section-heading">Business justification</div>
+
+        <div class="field">
+          <label for="justification">Why is this purchase needed? <span style="color:#EF4444">*</span></label>
+          <textarea id="justification" placeholder="Brief reason — one or two sentences is fine">Replacement of two damaged desks in the open plan area. DSE assessment flagged need for height-adjustable units to meet occupational health requirements.</textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="costCentre">Cost centre <span style="color:#EF4444">*</span></label>
+            <input type="text" id="costCentre" placeholder="e.g. CC-4021" value="CC-4021">
+          </div>
+          <div class="field">
+            <label for="requiredBy">Required by <span style="color:#EF4444">*</span></label>
+            <input type="date" id="requiredBy" value="2026-07-31">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="approver">Line manager / approver <span style="color:#EF4444">*</span></label>
+          <select id="approver">
+            <option>Clement O'Brien (CTO)</option>
+            <option>Adrian Murphy (Head of PMO)</option>
+            <option>Fergal Riggs (Procurement)</option>
+            <option>Sinead Leonard (Procurement)</option>
+            <option>Other</option>
+          </select>
+          <span class="hint">An approval request will be sent to them by email</span>
+        </div>
+
+        <div class="field">
+          <label for="supplier">Preferred supplier (if known)</label>
+          <input type="text" id="supplier" placeholder="Optional — leave blank if unknown">
+        </div>
+
+        <div class="section-heading">Quotes</div>
+
+        <div class="upload-zone" role="button" tabindex="0" aria-label="Upload supplier quotes — click to browse files">
+          <i class="ti ti-upload" aria-hidden="true"></i>
+          <p>Upload supplier quotes</p>
+          <span>PDF or image · Minimum 2 quotes required for items over €500</span>
+        </div>
+
+        <div class="file-list">
+          <div class="file-item">
+            <i class="ti ti-file-text" aria-hidden="true"></i>
+            Quote_OfficeWorld.pdf
+            <span style="color:#9CA3AF; font-size:12px; margin-left:auto;">€680 per unit</span>
+          </div>
+          <div class="file-item">
+            <i class="ti ti-file-text" aria-hidden="true"></i>
+            Quote_WorkspaceIE.pdf
+            <span style="color:#9CA3AF; font-size:12px; margin-left:auto;">€720 per unit</span>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn" onclick="goStep(1)">
+            <i class="ti ti-arrow-left" aria-hidden="true"></i> Back
+          </button>
+          <button class="btn btn-primary" onclick="goStep(3)">
+            Review <i class="ti ti-arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-panel" id="step3" role="region" aria-label="Step 3: Review and submit">
+
+        <div class="section-heading">Review your request</div>
+
+        <div class="confirm-card">
+          <table class="confirm-table">
+            <tr>
+              <td class="c-label">Requested by</td>
+              <td class="c-value">Fintan Kennedy, CTO Dept</td>
+            </tr>
+            <tr>
+              <td class="c-label">Item</td>
+              <td class="c-value" id="review-item">Sit-stand desk (x2)</td>
+            </tr>
+            <tr>
+              <td class="c-label">Category</td>
+              <td class="c-value" id="review-category">Office furniture</td>
+            </tr>
+            <tr>
+              <td class="c-label">Quantity</td>
+              <td class="c-value" id="review-qty">2</td>
+            </tr>
+            <tr>
+              <td class="c-label">Estimated cost</td>
+              <td class="c-value" id="review-cost">€1,400</td>
+            </tr>
+            <tr>
+              <td class="c-label">Cost centre</td>
+              <td class="c-value" id="review-cc">CC-4021</td>
+            </tr>
+            <tr>
+              <td class="c-label">Required by</td>
+              <td class="c-value" id="review-date">31 July 2026</td>
+            </tr>
+            <tr>
+              <td class="c-label">Approver</td>
+              <td class="c-value" id="review-approver">Clement O'Brien (CTO)</td>
+            </tr>
+            <tr>
+              <td class="c-label">Quotes attached</td>
+              <td class="c-value">2 documents</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="info-box" style="margin-top: 16px;">
+          <i class="ti ti-send" aria-hidden="true"></i>
+          <p>Submitting will log this request in ServiceNow and send an approval notification to your line manager. You will receive a reference number by email.</p>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn" onclick="goStep(2)">
+            <i class="ti ti-arrow-left" aria-hidden="true"></i> Back
+          </button>
+          <button class="btn btn-primary" onclick="goSubmit()">
+            Submit request <i class="ti ti-check" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="step-panel" id="step4" role="region" aria-label="Request submitted successfully">
+        <div class="success-wrap">
+          <div class="success-icon">
+            <i class="ti ti-circle-check" aria-hidden="true"></i>
+          </div>
+          <p class="success-title">Request submitted</p>
+          <p class="success-sub">Your purchase request has been logged in ServiceNow</p>
+          <div class="ref-pill">PRQ-2026-00847</div>
+          <div class="next-steps">
+            <div class="next-steps-title">What happens next</div>
+            <div class="next-step">
+              <div class="step-num">1</div>
+              <div>Approval request sent to your line manager — you'll be notified of their decision by email</div>
+            </div>
+            <div class="next-step">
+              <div class="step-num">2</div>
+              <div>If approved, the procurement team will review the quotes and raise a purchase order</div>
+            </div>
+            <div class="next-step">
+              <div class="step-num">3</div>
+              <div>You'll receive a confirmation email when the PO is raised, with expected delivery details</div>
+            </div>
+          </div>
+          <button class="btn" style="margin-top: 20px;" onclick="resetForm()">
+            <i class="ti ti-plus" aria-hidden="true"></i> Submit another request
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="page-footer">
+    Prototype · IÉ CTO Department · For discussion purposes only
+  </div>
+
+  <script>
+    function goStep(n) {
+      if (n === 3) populateReview();
+      document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('step' + n).classList.add('active');
+      var dots = document.querySelectorAll('.step-dot');
+      dots.forEach(function(d, i) { d.classList.toggle('active', i < n && n <= 3); });
+      var fills = { 1: '33%', 2: '66%', 3: '100%', 4: '100%' };
+      document.getElementById('progressFill').style.width = fills[n];
+      var labels = {
+        1: 'Step 1 of 3 — Item details',
+        2: 'Step 2 of 3 — Justification & quotes',
+        3: 'Step 3 of 3 — Review',
+        4: ''
+      };
+      document.getElementById('stepLabel').textContent = labels[n];
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function checkThreshold(val) {
+      var badge = document.getElementById('thresholdBadge');
+      var icon = document.getElementById('thresholdIcon');
+      var text = document.getElementById('thresholdText');
+      var warning = document.getElementById('overThresholdWarning');
+      if (parseFloat(val) >= 5000) {
+        badge.classList.add('over');
+        icon.className = 'ti ti-alert-triangle';
+        text.textContent = 'Over €5,000';
+        warning.classList.add('visible');
+      } else {
+        badge.classList.remove('over');
+        icon.className = 'ti ti-circle-check';
+        text.textContent = 'Under €5,000';
+        warning.classList.remove('visible');
+      }
+    }
+
+    function populateReview() {
+      var cost = parseFloat(document.getElementById('cost').value) || 0;
+      document.getElementById('review-item').textContent = document.getElementById('itemTitle').value || '—';
+      document.getElementById('review-category').textContent = document.getElementById('category').value;
+      document.getElementById('review-qty').textContent = document.getElementById('qty').value;
+      document.getElementById('review-cost').textContent = '€' + cost.toLocaleString('en-IE');
+      document.getElementById('review-cc').textContent = document.getElementById('costCentre').value || '—';
+      document.getElementById('review-approver').textContent = document.getElementById('approver').value;
+      var dateVal = document.getElementById('requiredBy').value;
+      if (dateVal) {
+        var d = new Date(dateVal);
+        document.getElementById('review-date').textContent = d.toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' });
+      }
+    }
+
+    function goSubmit() {
+      document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('step4').classList.add('active');
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('stepLabel').textContent = '';
+      document.querySelectorAll('.step-dot').forEach(function(d) { d.classList.remove('active'); });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetForm() {
+      goStep(1);
+    }
+  </script>
+</body>
+</html>
